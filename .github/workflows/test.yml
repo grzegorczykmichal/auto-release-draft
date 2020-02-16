@@ -1,23 +1,22 @@
 name: "build-test"
-on: # rebuild any PRs and main branch changes
-  pull_request:
+on:
+  create:
   push:
     branches:
       - master
-      - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
-    runs-on: ubuntu-latest
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
     steps:
-    - uses: actions/checkout@v1
-    - run: |
-        npm install
-        npm run all
-  test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with: 
-        milliseconds: 1000
+      - name: Checkout src
+        uses: actions/checkout@v1
+      - name: Create a release draft for a version
+        id: create-release-draft
+        uses: ./
+      - name: Print the URL of the release draft
+        run: echo ${{ steps.create-release-draft.outputs.release-url }} 
