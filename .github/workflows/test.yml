@@ -1,9 +1,9 @@
 name: "test"
 on:
-  create:
   push:
     branches:
       - master
+  create:
 
 jobs:
   test:

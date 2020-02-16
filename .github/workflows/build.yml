@@ -1,0 +1,20 @@
+name: "build"
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - name: Checkout src
+        uses: actions/checkout@v1
+      - name: Install deps
+        run: npm ci
+      - name: And now buil
+        run: npm run all
